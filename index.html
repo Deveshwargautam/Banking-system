@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banking System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>🏦 Banking System</h1>
+
+    <!-- Create Account -->
+    <div class="card">
+        <h2>Create Account</h2>
+        <input id="c_acc" type="text" placeholder="Account Number">
+        <input id="c_name" type="text" placeholder="Name">
+        <input id="c_pin" type="password" placeholder="PIN">
+        <input id="c_balance" type="number" placeholder="Initial Balance">
+        <button onclick="createAccount()">Create</button>
+    </div>
+
+    <!-- Deposit -->
+    <div class="card">
+        <h2>Deposit</h2>
+        <input id="d_acc" type="text" placeholder="Account Number">
+        <input id="d_pin" type="password" placeholder="PIN">
+        <input id="d_amount" type="number" placeholder="Amount">
+        <button onclick="deposit()">Deposit</button>
+    </div>
+
+    <!-- Withdraw -->
+    <div class="card">
+        <h2>Withdraw</h2>
+        <input id="w_acc" type="text" placeholder="Account Number">
+        <input id="w_pin" type="password" placeholder="PIN">
+        <input id="w_amount" type="number" placeholder="Amount">
+        <button onclick="withdraw()">Withdraw</button>
+    </div>
+
+</div>
+
+<!-- JavaScript -->
+<script>
+const baseURL = "http://127.0.0.1:5000";
+
+// CREATE ACCOUNT
+function createAccount() {
+    fetch(baseURL + "/create", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            account_number: document.getElementById("c_acc").value,
+            name: document.getElementById("c_name").value,
+            pin: document.getElementById("c_pin").value,
+            balance: parseInt(document.getElementById("c_balance").value)
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message));
+}
+
+// DEPOSIT
+function deposit() {
+    fetch(baseURL + "/deposit", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            account_number: document.getElementById("d_acc").value,
+            pin: document.getElementById("d_pin").value,
+            amount: parseInt(document.getElementById("d_amount").value)
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message + " Balance: " + data.balance));
+}
+
+// WITHDRAW
+function withdraw() {
+    fetch(baseURL + "/withdraw", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            account_number: document.getElementById("w_acc").value,
+            pin: document.getElementById("w_pin").value,
+            amount: parseInt(document.getElementById("w_amount").value)
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message + " Balance: " + data.balance));
+}
+</script>
+
+</body>
+</html>
